@@ -1,0 +1,8 @@
+---
+postgresql_packages:
+  - postgresql
+  - postgresql-contrib
+postgresql_version: "16"
+postgresql_listen_addresses: "*"
+postgresql_admin_password: "postgresql"
+ansible_python_interpreter: "/usr/bin/python3"
