@@ -1,0 +1,14 @@
+---
+postgresql_version: "*"
+postgresql_packages: []
+postgresql_ubuntu_packages:
+  - postgresql
+  - postgresql-contrib
+postgresql_centos_packages:
+  - postgresql-server
+  - postgresql-contrib
+postgresql_service_name: postgresql
+postgresql_admin_password: "postgresql"
+postgresql_hba_entries:
+  - { type: "local", database: "all", user: "all", address: "", auth_method: "peer" }
+  - { type: "host", database: "all", user: "all", address: "0.0.0.0/0", auth_method: "md5" }
