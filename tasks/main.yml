@@ -1,0 +1,12 @@
+---
+- name: Include setup tasks
+  include_tasks: setup.yml
+
+- name: Configure PostgreSQL
+  include_tasks: configure.yml
+
+- name: Ensure PostgreSQL is started and enabled
+  service:
+    name: "{{ postgresql_service_name }}"
+    state: started
+    enabled: yes
