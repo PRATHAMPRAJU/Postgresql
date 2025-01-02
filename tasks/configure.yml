@@ -1,0 +1,31 @@
+- name: Set PostgreSQL admin user password
+  become: yes
+  postgresql_user:
+    name: "postgres"
+    password: "{{ postgresql_admin_password }}"
+    encrypted: yes
+  failed_when: false
+  register: set_password_result
+
+
+- name: Force update pg_hba.conf
+  template:
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+    owner: postgres
+    group: postgres
+    mode: 0644
+  notify: Restart PostgreSQL
+
+- name: Allow PostgreSQL to listen on all interfaces
+  lineinfile:
+    path: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
+    regexp: "^#?listen_addresses =.*"
+    line: "listen_addresses = '*'"
+    state: present
+  notify: Restart PostgreSQL
+
+- name: Restart PostgreSQL service (if necessary)
+  service:
+    name: "{{ postgresql_service_name }}"
+    state: restarted
