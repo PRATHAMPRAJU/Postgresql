@@ -1,0 +1,16 @@
+---
+- name: Install PostgreSQL packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - postgresql-{{ postgresql_version }}
+    - postgresql-contrib-{{ postgresql_version }}
+    - python3-psycopg2
+
+- name: Initialize PostgreSQL database (if required)
+  command: "postgresql-{{ postgresql_version }}-setup initdb"
+  args:
+    creates: "/var/lib/pgsql/data"
+  when: ansible_os_family == "ubuntu"
